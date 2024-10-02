@@ -1,7 +1,6 @@
 # ACME Sales Analysis
 
 
-
 ## Introduction
 
 /
