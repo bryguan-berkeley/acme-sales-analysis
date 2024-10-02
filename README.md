@@ -1,80 +1,105 @@
-# UFC Fight Winner Prediction Model
+# ACME Sales Analysis
 
-This project builds a logistic regression machine learning model to predict the winner of UFC fights by analyzing historical fighter and fight data, achieving a final accuracy of 66%.
+This project for ACME, a pre-made meal company, involves processing and integrating large datasets from both their internal database and an external vendor using PostgreSQL, with extensive data validation and documentation. 
 
 ## Introduction
 
-The Ultimate Fighting Championship (UFC) has grown into one of the most popular sports globally, captivating millions of fans and bettors alike with its blend of martial arts, strategy, and high-stakes drama. The sport’s massive fanbase, combined with the rise of sports analytics, has driven a growing trend toward data-driven decision-making to enhance strategies and predictions. With a significant betting market surrounding UFC fights, accurate predictions offer not only potential financial gains but also deeper fan engagement. Understanding the factors influencing fighter performance—such as physical attributes, fighting style, and historical data—can provide a competitive edge for coaches, analysts, and bettors alike.
+This project involves working with large datasets in PostgreSQL through an end-to-end data processing pipeline for ACME, a client that specializes in selling pre-made meals. The workflow is divided into two main parts:
 
-This UFC fight winner prediction model addresses these needs by leveraging machine learning techniques to analyze historical fight data, offering a data-driven approach to predict outcomes. By uncovering key trends and features associated with victory, the model provides valuable insights into the sport, aiding stakeholders in making informed decisions while enhancing the overall fan experience.
+- Internal Data: This section focuses on processing ACME's internal data from their own database, which is stored in CSV files. The data includes sales, products, and customer information related to their pre-made meal offerings. These files are loaded into PostgreSQL tables, where SQL queries are run to explore and analyze the data for insights into ACME's business operations.
 
-While there is a significant body of literature on the topic, much of it is gate-kept due to its profitability. This project, while fundamental and relatively simple, serves as a starting point for those looking to explore this space. It provides a foundation that can be learned from and built upon, paving the way for more complex and sophisticated models in the future.
+- External Data: The second part involves handling data from an external vendor that ACME uses to help sell their meals. This data is stored in a nested JSON format. After parsing the JSON into CSV files, the external data is loaded into PostgreSQL tables and validated against ACME's internal data to ensure consistency and accuracy. SQL queries are then performed on both datasets, including cross-table queries that integrate data from both ACME and the vendor.
+
+The project includes extensive documentation, such as Entity-Relationship Diagrams (ERDs) and data dictionaries for over 14 tables, showcasing a robust approach to data integration and validation within a real-world retail environment.
+
+**The data used in this project is fictional and is intended for demonstration purposes only.**
 
 ## Table of Contents
 
 - [Notebooks Introduction](#notebooks-introduction)
-- [Notebook 1: Scraping](#notebook-1-scraping)
-- [Notebook 2: Loading](#notebook-2-loading)
-- [Notebook 3: Preprocessing](#notebook-3-preprocessing)
-- [Notebook 4: Exploring](#notebook-4-exploring)
-- [Results](#results)
+- [Notebook 1: Loading](#notebook-1-loading)
+- [Notebook 2: Querying Sales](#notebook-2-querying-sales)
+- [Notebook 3: Querying Customers](#notebook-3-querying-customers)
+- [Notebook 4: Querying Products](#notebook-4-querying-products)
+- [Notebook 5: Parsing](#notebook-5-parsing)
+- [Notebook 6: Loading](#notebook-6-loading)
+- [Notebook 7: Validating](#notebook-7-validating)
+- [Notebook 8: Querying](#notebook-8-querying)
+
 - [Conclusion](#conclusion)
 
 ## Notebooks Introduction
+ 
+This project is structured into eight Jupyter notebooks that showcase the handling and analysis of both internal and external data from a retail company. The notebooks are divided into two sections based on the data sources:
 
-The workflow is divided into five key Jupyter notebooks, each handling a distinct stage of the process. First, the scraping notebook collects the raw fight data from the UFC website. Next, the loading notebook organizes and stores this data in a structured format. The preprocessing notebook cleans and prepares the data, ensuring it is ready for analysis. In the exploration phase, key trends and relationships in the data are identified. Finally, the modeling notebook applies machine learning techniques to predict the winner of UFC fights based on the processed data.
+**Internal Data (Notebooks 1 - 4)**
 
-## Notebook 1: Scraping
+These notebooks work with the internal retail data stored in the "Data 1" folder, focusing on sales, products, and customers.
 
-In the Scraping notebook, I decided to collect my own data rather than rely on existing datasets available online. Although I found some similar datasets, they were often outdated, and I couldn't be certain that the methods used by other authors were rigorous enough for my purposes. Since the UFC doesn't offer a public API, I chose to use Beautiful Soup to scrape the data directly from the UFC website.
+- Notebook 1: Drops any existing tables, creates staging tables for the internal data, loads the CSV files into these tables, and verifies that the data has been successfully loaded.
 
-The UFC website has two primary sections that were relevant for my project: fighter details and fight details. For fighter data, I started with the main fighters page, which lists all UFC fighters. For fight data, I scraped the main events page, which contains every event, each of which lists all the fights associated with that event. The challenge here was making sure I looped through all these nested pages to capture the complete data for both fighters and fights. Throughout the process, I had to do spot checks because some pages didn’t follow the typical structure, especially with older data going back to 1994. This made the task even more challenging, given the scale: 4,252 fighters and 7,836 fights in total.
+- Notebook 2: Runs SQL queries to analyze sales, including gross sales, sales volumes by product, store, and time.
 
-After collecting the data, I exported it into a CSV format for easy loading in the next stages of the project. If you're looking for the most up-to-date UFC data, you can run this notebook.
+- Notebook 3: Focuses on customer-related queries, such as the distribution of customers by store, city, and sales metrics.
 
-## Notebook 2: Loading
+- Notebook 4: Queries product-related data, including metrics by month, store, and other relevant factors.
 
-In the Loading notebook, I started by reading the scraped CSV files and thoroughly investigating the structure and content of the data. The fighter dataset consists of 4,252 rows and 15 columns, capturing key attributes such as name, record, height, weight, reach, stance, birthday, and various performance metrics. These metrics include Significant Strikes Landed per Minute (SLpM), Significant Strike Accuracy (Str. Acc.), and Average Takedowns Landed per 15 minutes (TD Avg.), providing a detailed view of each fighter's historical performance, which is crucial for analyzing their fighting style and success.
+**External Data (Notebooks 5 - 8)**
 
-The fight dataset contains 7,836 rows and 42 columns, with information such as Fighter A and Fighter B names, the winner, fight date, location, and specific fight statistics. Key metrics include A_KD (knockdowns by Fighter A), A_SS (significant strikes by Fighter A), and A_TD (takedowns by Fighter A), along with corresponding statistics for Fighter B. Additional details such as takedown percentage (TD%), significant strikes to various areas (head, body, legs), and control time (distance, clinch, ground) are also recorded. These in-depth stats are critical for building a model that accurately predicts fight outcomes.
+These notebooks deal with external data provided by a third party, stored in the "Data 2" folder.
 
-To ensure data quality, I thoroughly examined the datasets for missing values, duplicates, unique values, and verified the data types of each column. After completing this quality check, I exported the cleaned dataframes as pickle files for use in the subsequent notebooks focused on preprocessing, exploration, and modeling.
+- Notebook 5: Parses the external data, which is in nested JSON format, into CSVs for further processing.
 
-## Notebook 3: Preprocessing
+- Notebook 6: Loads the parsed external data into staging tables in the PostgreSQL database.
 
-In the Preprocessing notebook, I tackled extensive cleaning of the data, as the raw data from the UFC website was fairly rough. First, I removed columns from the fights dataset that described in-fight statistics such as significant strikes, takedowns, and control time, keeping only the outcome (winner). Since this model is designed to be forward-looking, predicting who will win a fight, it’s crucial not to include information that comes from the actual fight itself.
+- Notebook 7: Validates the external data to ensure it makes sense independently and aligns with the existing internal data by cross-referencing both datasets.
 
-Next, I dropped rows for fights that ended in a draw, as there were only 58 draws out of over 7,836 fights, and our focus is on predicting a winner. I also randomized the winners since the UFC website always listed Fighter B as the winner, and I didn’t want the model to learn any bias that Fighter B always wins. After that, I merged the fighter and fight datasets to ensure that each fight was matched with the relevant fighter details.
+- Notebook 8: Runs SQL queries on the external data, similar to those performed on the internal data, allowing for comparison and analysis across both datasets.
 
-In terms of data cleaning, I converted the fighters' height, weight, and reach from strings to floats in the metric system for consistency. I also calculated each fighter’s age by subtracting their birthdate from the fight date. Since reach was the most commonly missing value, I imputed missing reach values by assuming that a fighter’s reach is, on average, equal to their height—this allowed me to retain more rows in the dataset without sacrificing too much accuracy. Lastly, I ensured that all columns were set to the appropriate data types.
+All data and tables with a _1 suffix relate to internal data, while those with a _2 suffix correspond to external data. This structured approach demonstrates how both internal and external datasets can be integrated, validated, and queried within a unified database system.
 
-After cleaning the data, I exported the resulting dataframes as pickle files to be used in the next notebooks for exploration and modeling.
+## Notebook 1: Loading
 
-## Notebook 4: Exploring
+This notebook sets up the staging tables for internal retail data in a local PostgreSQL database. After dropping any existing tables, new staging tables are designed and created, followed by loading data from CSV files into these tables. The data load is then verified to ensure accuracy. You can click the links below to view the ERD and data dictionary, which help clarify the table structure and data relationships for the project.
 
-In the Exploring notebook, I performed exploratory data analysis (EDA) to gain a deeper understanding of the dataset. I began by calculating the summary statistics for key fighter attributes such as age, height, weight, and reach, and visualized their distributions using histograms to observe how these variables are spread across the dataset. Additionally, I examined the distributions for categorical variables like win method, fighter stance, weight division, and fight dates, which provided valuable insights into trends within the UFC data. Finally, I created a correlation matrix to explore relationships between numerical features, helping to identify potential predictors for modeling fight outcomes. This exploratory analysis laid the groundwork for feature selection and model development in later stages.
+[Entity Relationship Diagram 1](Data%201/Entity%20Relationship%20Diagram%201.pdf)
 
-## Notebook 5: Modeling
 
-In the Modeling notebook, I began by selecting the features and outcome variable that would be used to train the machine learning models. The target outcome was the fight winner, and the features included each fighter's physical attributes—height, weight, reach, and age—as well as performance statistics. After selecting the relevant features, I shuffled and split the data into training and testing sets, ensuring that the numerical data was standardized to ensure consistent scaling across features. This preprocessing step prepared the dataset so that any model could easily use this "modeling-ready" data for training and evaluation.
+[Data Dictionary 1](Data%201/Data%20Dictionary%201.pdf)
 
-As a starting point, I defined a baseline model that always predicts the majority class (the fighter with the most wins), which returned a test accuracy of 51%. This provided a benchmark to measure the performance of the machine learning models against. Each of the models I built was a binary logistic regression model, with no hidden layers, using a sigmoid activation function and a bias parameter. Both the weight and bias were initialized at one, and I used binary cross-entropy as the loss function. I employed Stochastic Gradient Descent (SGD) as the optimizer, and loss and accuracy were used as the evaluation metrics.
+## Notebook 2: Querying Sales
 
-Next, I worked on building and evaluating several machine learning models. Each model followed the same process: dropping missing values, building the model, fitting the data, assessing and plotting performance, and finally, performing hyperparameter tuning (adjusting learning rate, batch size, and epochs) to optimize accuracy. The first model used only the physical attributes (height, weight, reach, and age) to predict the winner, resulting in a test accuracy of 48%, which was lower than the baseline.
+In this notebook, I perform a comprehensive analysis of sales data, starting with overall metrics like gross sales, sales volume, and average order value. These metrics are then broken down for more detailed insights by store, month, day of the week, and combinations such as store and month, as well as store and day of the week. This deeper analysis helps uncover sales patterns and trends across various time periods and locations.
 
-For the second model, I expanded the feature set by adding each fighter's performance statistics, such as significant strikes and takedowns, to the physical attributes. After hyperparameter tuning, this model achieved a test accuracy of 66%, representing a 15% improvement over the baseline. Finally, in the third model, I introduced one-hot encoded fighter names to Model 2 in an attempt to capture additional fighter-specific characteristics. However, after tuning, this model's performance decreased, yielding a test accuracy of 53%, slightly above the baseline but lower than the second model.
+## Notebook 3: Querying Customers
 
-## Results
+In this notebook, the focus is on analyzing customer data from the internal retail dataset. The queries explore customer distribution and behavior by identifying customers by store and city. Additionally, customer-related metrics such as total sales and purchase quantity are calculated, providing insights into customer activity and engagement across different regions and stores.
 
-The results of the modeling indicate that Model 2 is the most effective, showing a 15% improvement over the baseline, with a test accuracy of 66%. In hindsight, Model 1, which only used the fighter's age, height, weight, and reach, was likely too simplistic. These physical attributes are more innate characteristics and less reflective of a fighter's actual skill level, especially since fighters tend to optimize their weight to the maximum allowed in their weight class. This may have made weight a less meaningful predictor.
+## Notebook 4: Querying Products
 
-With Model 3, adding one-hot encoded fighter names introduced unnecessary complexity. Since many fighters don't compete frequently—some only once—there was insufficient data to properly train these name variables, which led to a decrease in accuracy. While 66% accuracy may not seem impressive on the surface, in contexts like sports betting, even a modest edge over the long term can lead to significant payoffs. This suggests that while there is room for improvement, Model 2’s performance offers meaningful potential in real-world applications.
+This notebook focuses on querying the product data to gain insights into product performance. Key metrics include units sold by product, as well as more granular breakdowns such as units sold by product and store, by month, by month and product, and by day of the week and product. These queries help identify sales trends and product demand patterns, offering a detailed view of how different products perform across various dimensions.
 
-## Conclusion
+# Notebook 5: Parsing
 
-In conclusion, Model 2, with its 66% accuracy, demonstrates that even a basic model can make a difference in real-world applications, particularly in areas like sports betting, where a small edge can yield significant payoffs over time. However, there is still much to be desired in terms of improving the model. The machine learning techniques used in this project are quite rudimentary, and more advanced methods could lead to better results. We can enhance the model by adding hidden layers, using learning rate scheduling, experimenting with different optimizers, and incorporating regularization techniques like dropout or batch normalization. Beyond logistic regression, other models such as K-Nearest Neighbors (KNN), Recurrent Neural Networks (RNNs), Transformers, or even reinforcement learning could provide additional insights.
+In this notebook, I perform a recursive walk through a nested JSON file provided as external data. The goal is to parse the complex, hierarchical structure of the JSON and transform it into flat CSV files that can be easily loaded into PostgreSQL for further analysis. This step is crucial for preparing the external data for validation and integration with the internal retail data in subsequent notebooks.
 
-Moreover, rather than relying on overall fighter statistics from their entire careers, we could refine the model by calculating each fighter's statistics at the point in time when the fight occurs, using data from their previous fights. Incorporating additional data and modeling fighter interactions—such as how different fighting styles or stances match up—could also add complexity and improve predictions. These kinds of models are inherently more complex because they involve predicting the outcome of two entities interacting with each other.
+# Notebook 6: Loading
 
-Despite the potential for improvement, it’s important to acknowledge that sports are inherently human and unpredictable, with a level of randomness that no model can fully capture. Nonetheless, I hope this notebook serves as a starting point for more advanced modeling techniques and inspires further work in this space.
+In this notebook, I create staging tables in PostgreSQL to load the external data that was parsed into CSV files in the previous step. The tables are designed to accommodate the structure of the external data, ensuring smooth integration with the internal data. You can view the relationships and table information in the linked ERD 2 and data dictionary, which provide detailed documentation of the external data schema.
 
+[Entity Relationship Diagram 2](Data%202/Entity%20Relationship%20Diagram%202.pdf)
+
+
+[Data Dictionary 2](Data%202/Data%20Dictionary%202.pdf)
+
+# Notebook 7: Validating
+
+In this notebook, I focus on validating the external data loaded into staging tables. First, the external data is validated independently to ensure its integrity. Then, I cross-validate it against the primary and secondary tables from the internal data, checking for consistency and alignment between the two datasets. This step is essential for ensuring that the external data is reliable and compatible with the internal retail data for further analysis.
+
+# Notebook 8: Querying
+
+In this notebook, I run queries on the external data to calculate key metrics such as gross sales, sales volume, average order value (AOV), and customer activity. Additionally, I perform comparative analysis between the external and internal datasets, calculating the external retail gross sales, sales volume, AOV, and customer metrics as a percentage of their internal counterparts. These comparisons help evaluate the contribution of external data relative to internal performance, offering deeper insights into the overall retail business.
+
+# Conclusion
+
+This project demonstrates a complete ELT (Extract, Load, Transform) process for managing and analyzing internal and external retail data using PostgreSQL. While the queries and insights—such as sales metrics, customer behavior, and product performance—are straightforward, the main objective was to ensure the entire data pipeline is organized, clean, and efficient. The data is first extracted from CSV and JSON files, loaded into PostgreSQL staging tables, and then transformed through validation and queries within the database. The project emphasizes the importance of a solid data foundation, not just for analysis but for ensuring that the data is prepared and structured for deeper insights and more complex analysis.
