@@ -25,7 +25,9 @@ In this notebook, the goal was to transform raw sales data provided in a nested 
 
 ## Notebook 2: Loading
 
-In this notebook, I established a connection to a locally hosted PostgreSQL server to load the parsed sales, stores, customers, and products data into a structured database. The process began with the creation of staging tables for each of the key entities: customers, sales, stores, and products. These tables mirror the structure of the CSV files generated in the previous notebook, ensuring that the data is stored in a clean, organized manner. Each table was designed with appropriate data types and constraints to maintain data integrity. After loading the CSV data into the respective staging tables, I ran several queries across the entire dataset to verify that the data was loaded correctly. 
+In this notebook, I established a connection to a locally hosted PostgreSQL server to load the parsed sales, stores, customers, and products data into a structured database. The process began with the creation of staging tables for each of the key entities: customers, sales, stores, and products. These tables mirror the structure of the CSV files generated in the previous notebook, ensuring that the data is stored in a clean, organized manner. Each table was designed with appropriate data types and constraints to maintain data integrity. After loading the CSV data into the respective staging tables, I ran several queries across the entire dataset to verify that the data was loaded correctly. To visualize the structure and relationships between the data entities, I created an Entity-Relationship Diagram (ERD) that outlines the connections between the customers, sales, stores, and products tables. 
+
+![ERD](ERD.png)
 
 ## Notebook 3: Validating
 
