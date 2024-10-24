@@ -25,7 +25,6 @@ The project includes extensive documentation, such as Entity-Relationship Diagra
 - [Notebook 6: Loading](#notebook-6-loading)
 - [Notebook 7: Validating](#notebook-7-validating)
 - [Notebook 8: Querying](#notebook-8-querying)
-
 - [Conclusion](#conclusion)
 
 ## Notebooks Introduction
