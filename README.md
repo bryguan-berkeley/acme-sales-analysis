@@ -78,11 +78,11 @@ In this notebook, the focus is on analyzing customer data from the internal reta
 
 This notebook focuses on querying the product data to gain insights into product performance. Key metrics include units sold by product, as well as more granular breakdowns such as units sold by product and store, by month, by month and product, and by day of the week and product. These queries help identify sales trends and product demand patterns, offering a detailed view of how different products perform across various dimensions.
 
-# Notebook 5: Parsing
+## Notebook 5: Parsing
 
 In this notebook, I perform a recursive walk through a nested JSON file provided as external data. The goal is to parse the complex, hierarchical structure of the JSON and transform it into flat CSV files that can be easily loaded into PostgreSQL for further analysis. This step is crucial for preparing the external data for validation and integration with the internal retail data in subsequent notebooks.
 
-# Notebook 6: Loading
+## Notebook 6: Loading
 
 In this notebook, I create staging tables in PostgreSQL to load the external data that was parsed into CSV files in the previous step. The tables are designed to accommodate the structure of the external data, ensuring smooth integration with the internal data. You can view the relationships and table information in the linked ERD 2 and data dictionary, which provide detailed documentation of the external data schema.
 
@@ -91,14 +91,14 @@ In this notebook, I create staging tables in PostgreSQL to load the external dat
 
 [Data Dictionary 2](Data%202/Data%20Dictionary%202.pdf)
 
-# Notebook 7: Validating
+## Notebook 7: Validating
 
 In this notebook, I focus on validating the external data loaded into staging tables. First, the external data is validated independently to ensure its integrity. Then, I cross-validate it against the primary and secondary tables from the internal data, checking for consistency and alignment between the two datasets. This step is essential for ensuring that the external data is reliable and compatible with the internal retail data for further analysis.
 
-# Notebook 8: Querying
+## Notebook 8: Querying
 
 In this notebook, I run queries on the external data to calculate key metrics such as gross sales, sales volume, average order value (AOV), and customer activity. Additionally, I perform comparative analysis between the external and internal datasets, calculating the external retail gross sales, sales volume, AOV, and customer metrics as a percentage of their internal counterparts. These comparisons help evaluate the contribution of external data relative to internal performance, offering deeper insights into the overall retail business.
 
-# Conclusion
+## Conclusion
 
 This project demonstrates a complete ELT (Extract, Load, Transform) process for managing and analyzing internal and external retail data using PostgreSQL. While the queries and insights—such as sales metrics, customer behavior, and product performance—are straightforward, the main objective was to ensure the entire data pipeline is organized, clean, and efficient. The data is first extracted from CSV and JSON files, loaded into PostgreSQL staging tables, and then transformed through validation and queries within the database. The project emphasizes the importance of a solid data foundation, not just for analysis but for ensuring that the data is prepared and structured for deeper insights and more complex analysis.
